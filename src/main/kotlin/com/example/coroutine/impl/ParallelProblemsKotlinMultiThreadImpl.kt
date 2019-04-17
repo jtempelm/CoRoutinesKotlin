@@ -1,0 +1,10 @@
+package com.example.coroutine.impl
+
+import com.example.coroutine.ParallelProblems
+
+class ParallelProblemsKotlinMultiThreadImpl: ParallelProblems {
+    override fun findLargestNumberInAnArray(array: Array<IntArray>): Int {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+}
