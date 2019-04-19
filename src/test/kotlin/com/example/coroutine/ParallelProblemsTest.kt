@@ -1,6 +1,8 @@
 package com.example.coroutine
 
-import com.example.coroutine.impl.*
+import com.example.coroutine.impl.ParallelProblemsKotlinCoRoutineImpl
+import com.example.coroutine.impl.ParallelProblemsKotlinMultiThreadImpl
+import com.example.coroutine.impl.ParallelProblemsKotlinSerialImpl
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -17,13 +19,13 @@ class ParallelProblemsTest {
         val twoDNumberArray = generate2DArray(ARRAY_SIZE)
         // print2DArray(array) //DEBUG, don't run on huge array sizes
 
-        findLargestNumberWithImplementation(ParallelProblemsKotlinSerialImpl(), twoDNumberArray)
-        findLargestNumberWithImplementation(ParallelProblemsKotlinMultiThreadImpl(), twoDNumberArray)
-        findLargestNumberWithImplementation(ParallelProblemsKotlinCoRoutineImpl(), twoDNumberArray)
+        findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsKotlinSerialImpl())
+        findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsKotlinMultiThreadImpl())
+        findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsKotlinCoRoutineImpl())
 
-        findLargestNumberWithImplementation(ParallelProblemsJavaSerialImpl(), twoDNumberArray)
-        findLargestNumberWithImplementation(ParallelProblemsJavaMultiThreadingImpl(), twoDNumberArray)
-        findLargestNumberWithImplementation(ParallelProblemsJavaCoRoutineImpl(), twoDNumberArray)
+        // findLargestNumberInArrayWithImplementation(ParallelProblemsJavaSerialImpl(), twoDNumberArray)
+        // findLargestNumberInArrayWithImplementation(ParallelProblemsJavaMultiThreadingImpl(), twoDNumberArray)
+        // findLargestNumberInArrayWithImplementation(ParallelProblemsJavaCoRoutineImpl(), twoDNumberArray)
     }
 
     private fun generate2DArray(size: Int): Array<IntArray> {
@@ -43,9 +45,9 @@ class ParallelProblemsTest {
         return twoDNumberArray
     }
 
-    private fun findLargestNumberWithImplementation(parallelProblems: ParallelProblems, twoDNumberArray: Array<IntArray>) {
+    private fun findLargestNumberInArrayWithImplementation(twoDNumberArray: Array<IntArray>, parallelProblems: ParallelProblems) {
         val largestNumber = parallelProblems.findLargestNumberInAnArray(twoDNumberArray) //TODO profile these for the times
-        assertEquals(largestNumber, largestNumberGenerated)
+        assertEquals(largestNumberGenerated, largestNumber)
     }
 
 
