@@ -1,9 +1,10 @@
 package com.example.coroutine.impl
 
 import com.example.coroutine.ParallelProblems
-import com.example.coroutine.util.TwoDimensionArraySearchUtils.Companion.findLargestNumberInArrayRange
-import com.example.coroutine.util.TwoDimensionArraySearchUtils.Companion.findLargestNumberInResultArray
+import com.example.coroutine.util.TwoDimensionArraySearchUtilsKotlin.Companion.findLargestNumberInArrayRange
+import com.example.coroutine.util.TwoDimensionArraySearchUtilsKotlin.Companion.findLargestNumberInResultArray
 import java.lang.Thread.sleep
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.concurrent.thread
 
 class ParallelProblemsKotlinMultiThreadImpl : ParallelProblems {
@@ -15,16 +16,16 @@ class ParallelProblemsKotlinMultiThreadImpl : ParallelProblems {
 
         val largestNumbersInRangeArray = IntArray(numberOfThreads) { Int.MIN_VALUE } //Int.MIN_SIZE?
 
-        var exitedThreads = 0
+        var exitedThreads = AtomicInteger(0)
         val scanRangeSize = array.size / numberOfThreads
         for (i in 0 until numberOfThreads) {
             thread {
                 largestNumbersInRangeArray[i] = findLargestNumberInArrayRange(i * scanRangeSize, scanRangeSize, array)
-                exitedThreads += 1
+                exitedThreads.incrementAndGet()
             }
         }
 
-        while (exitedThreads != numberOfThreads) {
+        while (exitedThreads.toInt() != numberOfThreads) {
             sleep(delayMillis)
         }
 

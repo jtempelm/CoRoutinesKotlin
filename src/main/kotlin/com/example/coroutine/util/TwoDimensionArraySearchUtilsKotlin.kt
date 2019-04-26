@@ -1,6 +1,6 @@
 package com.example.coroutine.util
 
-class TwoDimensionArraySearchUtils {
+class TwoDimensionArraySearchUtilsKotlin {
 
     companion object {
         fun findLargestNumberInArrayRange(startOfRange: Int, scanRangeSize: Int, array: Array<IntArray>): Int {

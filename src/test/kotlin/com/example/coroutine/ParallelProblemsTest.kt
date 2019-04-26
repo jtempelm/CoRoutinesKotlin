@@ -1,8 +1,6 @@
 package com.example.coroutine
 
-import com.example.coroutine.impl.ParallelProblemsKotlinCoRoutineImpl
-import com.example.coroutine.impl.ParallelProblemsKotlinMultiThreadImpl
-import com.example.coroutine.impl.ParallelProblemsKotlinSerialImpl
+import com.example.coroutine.impl.*
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
@@ -23,9 +21,9 @@ class ParallelProblemsTest {
         findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsKotlinMultiThreadImpl())
         findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsKotlinCoRoutineImpl())
 
-        // findLargestNumberInArrayWithImplementation(ParallelProblemsJavaSerialImpl(), twoDNumberArray)
-        // findLargestNumberInArrayWithImplementation(ParallelProblemsJavaMultiThreadingImpl(), twoDNumberArray)
-        // findLargestNumberInArrayWithImplementation(ParallelProblemsJavaCoRoutineImpl(), twoDNumberArray)
+        findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsJavaSerialImpl())
+        findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsJavaMultiThreadingImpl())
+        // findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsJavaCoRoutineImpl())
     }
 
     private fun generate2DArray(size: Int): Array<IntArray> {
