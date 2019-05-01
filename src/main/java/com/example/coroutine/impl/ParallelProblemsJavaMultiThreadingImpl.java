@@ -12,7 +12,7 @@ import static java.lang.Thread.sleep;
 public class ParallelProblemsJavaMultiThreadingImpl implements ParallelProblems {
 
     private static int DELAY_MILLIS = 1000;
-    private int NUMBER_OF_THREADS = 4;
+    private static int NUMBER_OF_THREADS = 4;
 
     public int findLargestNumberInAnArray(@NotNull final int[][] array) {
 
@@ -25,7 +25,7 @@ public class ParallelProblemsJavaMultiThreadingImpl implements ParallelProblems 
             new SearchArrayRange(i * scanRangeSize, scanRangeSize, array, i, largestNumbersInRangeArray, exitedThreads).run();
         }
 
-        while (exitedThreads.intValue() != NUMBER_OF_THREADS) {
+        while (exitedThreads.intValue() < NUMBER_OF_THREADS) {
             try {
                 sleep(DELAY_MILLIS);
             } catch (InterruptedException ignored) {

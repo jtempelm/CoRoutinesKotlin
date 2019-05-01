@@ -17,7 +17,7 @@ public class TwoDimensionArraySearchUtilsJava {
 
     public static int findLargestNumberInResultArray(int[] largestNumbersInRange) {
         int largestNumber = Integer.MIN_VALUE;
-        for (int i = 0; i< largestNumbersInRange.length; i++) {
+        for (int i = 0; i < largestNumbersInRange.length; i++) {
             if (largestNumber < largestNumbersInRange[i]) {
                 largestNumber = largestNumbersInRange[i];
             }

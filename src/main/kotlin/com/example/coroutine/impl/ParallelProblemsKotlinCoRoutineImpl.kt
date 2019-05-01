@@ -24,7 +24,7 @@ class ParallelProblemsKotlinCoRoutineImpl : ParallelProblems {
             }
         }
 
-        while (exitedCoRoutines.toInt() != numberOfCoRoutines) {
+        while (exitedCoRoutines.toInt() < numberOfCoRoutines) {
             Thread.sleep(delayMillis)
         }
 

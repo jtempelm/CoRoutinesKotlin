@@ -23,7 +23,7 @@ class ParallelProblemsTest {
 
         findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsJavaSerialImpl())
         findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsJavaMultiThreadingImpl())
-        // findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsJavaCoRoutineImpl())
+        findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsJavaCoRoutineImpl())
     }
 
     private fun generate2DArray(size: Int): Array<IntArray> {
