@@ -14,7 +14,11 @@ import static java.lang.Thread.sleep;
 public class ParallelProblemsJavaCoRoutineImpl implements ParallelProblems {
 
     private static int DELAY_MILLIS = 1000;
-    private int NUMBER_OF_COROUTINES = 4;
+    private int NUMBER_OF_COROUTINES;
+
+    public ParallelProblemsJavaCoRoutineImpl(int numberOfCoRoutines) {
+        this.NUMBER_OF_COROUTINES = numberOfCoRoutines;
+    }
 
     public int findLargestNumberInAnArray(@NotNull final int[][] array) {
         int[] largestNumbersInRangeArray = new int[NUMBER_OF_COROUTINES];

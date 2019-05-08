@@ -7,10 +7,9 @@ import java.lang.Thread.sleep
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.concurrent.thread
 
-class ParallelProblemsKotlinMultiThreadImpl : ParallelProblems {
+class ParallelProblemsKotlinMultiThreadImpl(private val numberOfThreads: Int) : ParallelProblems {
 
     private val delayMillis: Long = 1000
-    private val numberOfThreads = 4
 
     override fun findLargestNumberInAnArray(array: Array<IntArray>): Int {
 

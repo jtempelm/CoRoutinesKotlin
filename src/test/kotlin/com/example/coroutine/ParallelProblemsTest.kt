@@ -9,7 +9,9 @@ class ParallelProblemsTest {
     private var largestNumberGenerated = Int.MIN_VALUE
 
     companion object {
-        private const val ARRAY_SIZE = 20
+        private const val ARRAY_SIZE = 30_000
+        private const val NUMBER_OF_THREADS = 2
+        private const val NUMBER_OF_COROUTINES = 2
     }
 
     @Test
@@ -17,13 +19,35 @@ class ParallelProblemsTest {
         val twoDNumberArray = generate2DArray(ARRAY_SIZE)
         // print2DArray(array) //DEBUG, don't run on huge array sizes
 
+        var startTime = System.currentTimeMillis()
         findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsKotlinSerialImpl())
-        findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsKotlinMultiThreadImpl())
-        findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsKotlinCoRoutineImpl())
+        var endTime = System.currentTimeMillis()
+        System.out.println("Serial Kotlin Implementation took ${endTime - startTime}ms")
 
+        startTime = System.currentTimeMillis()
+        findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsKotlinMultiThreadImpl(numberOfThreads = NUMBER_OF_THREADS))
+        endTime = System.currentTimeMillis()
+        System.out.println("MultiThread Kotlin Implementation took ${endTime - startTime}ms with $NUMBER_OF_THREADS threads")
+
+        startTime = System.currentTimeMillis()
+        findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsKotlinCoRoutineImpl(numberOfCoRoutines = NUMBER_OF_COROUTINES))
+        endTime = System.currentTimeMillis()
+        System.out.println("CoRoutine Kotlin Implementation took ${endTime - startTime}ms with $NUMBER_OF_COROUTINES coroutines")
+
+        startTime = System.currentTimeMillis()
         findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsJavaSerialImpl())
-        findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsJavaMultiThreadingImpl())
-        findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsJavaCoRoutineImpl())
+        endTime = System.currentTimeMillis()
+        System.out.println("Serial Java Implementation took ${endTime - startTime}ms")
+
+        startTime = System.currentTimeMillis()
+        findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsJavaMultiThreadingImpl(NUMBER_OF_THREADS))
+        endTime = System.currentTimeMillis()
+        System.out.println("MultiThread Java Implementation took ${endTime - startTime}ms with $NUMBER_OF_THREADS threads")
+
+        startTime = System.currentTimeMillis()
+        findLargestNumberInArrayWithImplementation(twoDNumberArray, ParallelProblemsJavaCoRoutineImpl(NUMBER_OF_COROUTINES))
+        endTime = System.currentTimeMillis()
+        System.out.println("CoRoutine Java Implementation took ${endTime - startTime}ms with $NUMBER_OF_COROUTINES coroutines")
     }
 
     private fun generate2DArray(size: Int): Array<IntArray> {

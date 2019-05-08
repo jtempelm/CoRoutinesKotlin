@@ -7,10 +7,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicInteger
 
-class ParallelProblemsKotlinCoRoutineImpl : ParallelProblems {
+class ParallelProblemsKotlinCoRoutineImpl(private val numberOfCoRoutines: Int) : ParallelProblems {
 
     private val delayMillis: Long = 1000
-    private val numberOfCoRoutines = 4
     private val largestNumbersInRangeArray = IntArray(numberOfCoRoutines) { Int.MIN_VALUE } //Int.MIN_SIZE?
     private var exitedCoRoutines = AtomicInteger(0)
 
