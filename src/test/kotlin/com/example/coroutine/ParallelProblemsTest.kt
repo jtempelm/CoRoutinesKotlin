@@ -1,18 +1,21 @@
 package com.example.coroutine
 
-import com.example.coroutine.impl.*
+import com.example.coroutine.impl.ParallelProblemsJavaCoRoutineImpl
+import com.example.coroutine.impl.ParallelProblemsJavaMultiThreadingImpl
+import com.example.coroutine.impl.ParallelProblemsJavaSerialImpl
+import com.example.coroutine.impl.ParallelProblemsKotlinCoRoutineImpl
+import com.example.coroutine.impl.ParallelProblemsKotlinMultiThreadImpl
+import com.example.coroutine.impl.ParallelProblemsKotlinSerialImpl
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+
+private const val ARRAY_SIZE = 30_000
+private const val NUMBER_OF_THREADS = 2
+private const val NUMBER_OF_COROUTINES = 2
 
 class ParallelProblemsTest {
 
     private var largestNumberGenerated = Int.MIN_VALUE
-
-    companion object {
-        private const val ARRAY_SIZE = 30_000
-        private const val NUMBER_OF_THREADS = 2
-        private const val NUMBER_OF_COROUTINES = 2
-    }
 
     @Test
     fun findTheLargestNumberInA2dArray() {
