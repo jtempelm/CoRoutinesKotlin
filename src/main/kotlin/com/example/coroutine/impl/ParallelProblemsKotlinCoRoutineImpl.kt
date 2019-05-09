@@ -1,15 +1,15 @@
 package com.example.coroutine.impl
 
 import com.example.coroutine.ParallelProblems
-import com.example.coroutine.util.TwoDimensionArraySearchUtilsKotlin.Companion.findLargestNumberInArrayRange
-import com.example.coroutine.util.TwoDimensionArraySearchUtilsKotlin.Companion.findLargestNumberInResultArray
+import com.example.coroutine.util.findLargestNumberInArrayRange
+import com.example.coroutine.util.findLargestNumberInResultArray
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicInteger
 
-class ParallelProblemsKotlinCoRoutineImpl(private val numberOfCoRoutines: Int) : ParallelProblems {
+private const val delayMillis: Long = 1000
 
-    private val delayMillis: Long = 1000
+class ParallelProblemsKotlinCoRoutineImpl(private val numberOfCoRoutines: Int) : ParallelProblems {
     private val largestNumbersInRangeArray = IntArray(numberOfCoRoutines) { Int.MIN_VALUE } //Int.MIN_SIZE?
     private var exitedCoRoutines = AtomicInteger(0)
 

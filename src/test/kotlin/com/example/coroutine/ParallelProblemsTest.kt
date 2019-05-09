@@ -2,9 +2,19 @@ package com.example.coroutine
 
 import java.util.Arrays
 import com.example.coroutine.impl.*
+import com.example.coroutine.impl.ParallelProblemsJavaCoRoutineImpl
+import com.example.coroutine.impl.ParallelProblemsJavaMultiThreadingImpl
+import com.example.coroutine.impl.ParallelProblemsJavaSerialImpl
+import com.example.coroutine.impl.ParallelProblemsKotlinCoRoutineImpl
+import com.example.coroutine.impl.ParallelProblemsKotlinMultiThreadImpl
+import com.example.coroutine.impl.ParallelProblemsKotlinSerialImpl
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeAll
 import kotlin.test.assertEquals
+
+private const val ARRAY_SIZE = 30_000
+private const val NUMBER_OF_THREADS = 2
+private const val NUMBER_OF_COROUTINES = 2
 
 class ParallelProblemsTest {
     private val twoDNumberArray = generate2DArray(ARRAY_SIZE)
