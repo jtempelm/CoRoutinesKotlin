@@ -5,61 +5,74 @@ import com.example.coroutine.util.TwoDimensionArraySearchUtilsJava;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.Callable;
 
 import static java.lang.Thread.sleep;
 
 public class ParallelProblemsJavaMultiThreadingImpl implements ParallelProblems {
+    private final java.util.concurrent.ExecutorService executor;
+    private final int numberOfThreads;
 
-    private static int DELAY_MILLIS = 1000;
-    private int NUMBER_OF_THREADS;
-
-    public ParallelProblemsJavaMultiThreadingImpl(int numberOfThreads) {
-        this.NUMBER_OF_THREADS = numberOfThreads;
+    public ParallelProblemsJavaMultiThreadingImpl(final int numberOfThreads) {
+        this.executor = Executors.newFixedThreadPool(numberOfThreads);
+        this.numberOfThreads = numberOfThreads;
     }
 
     public int findLargestNumberInAnArray(@NotNull final int[][] array) {
+        int scanRangeSize = array.length / this.numberOfThreads;
 
-        int[] largestNumbersInRangeArray = new int[NUMBER_OF_THREADS];
-        Arrays.fill(largestNumbersInRangeArray, Integer.MIN_VALUE);
-
-        AtomicInteger exitedThreads = new AtomicInteger(0); //threadsafe atomic int?
-        int scanRangeSize = array.length / NUMBER_OF_THREADS;
-        for (int i = 0; i < NUMBER_OF_THREADS; i++) {
-            new SearchArrayRange(i * scanRangeSize, scanRangeSize, array, i, largestNumbersInRangeArray, exitedThreads).run();
+        final List<Callable<Integer>> tasks = new ArrayList<>(this.numberOfThreads);
+        for (int i = 0; i < this.numberOfThreads; i++) {
+            tasks.add(new SearchArrayRange(i * scanRangeSize, scanRangeSize, array, i));
         }
 
-        while (exitedThreads.intValue() < NUMBER_OF_THREADS) {
-            try {
-                sleep(DELAY_MILLIS);
-            } catch (InterruptedException ignored) {
-            }
+        try {
+            return this.executor.invokeAll(tasks)
+                .stream()
+                .mapToInt(ParallelProblemsJavaMultiThreadingImpl::getUninteruptably)
+                .max()
+                .getAsInt();
+        } catch (final InterruptedException ex) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(ex);
+        } catch (final Exception ex) {
+            throw new RuntimeException(ex);
         }
-
-        return TwoDimensionArraySearchUtilsJava.findLargestNumberInResultArray(largestNumbersInRangeArray);
     }
 
-    private class SearchArrayRange implements Runnable {
+    private static Integer getUninteruptably(final Future<Integer> f) {
+        for (;;) {
+            try {
+                return f.get();
+            } catch (final InterruptedException ex) {
+            } catch (final Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
 
-        private int startOfRange;
-        private int scanRangeSize;
-        private int[][] array;
-        private int threadIndex;
-        private int[] largestNumbersInRangeArray;
-        private AtomicInteger exitedThreads;
+    private final class SearchArrayRange implements Callable<Integer> {
 
-        public SearchArrayRange(int startOfRange, int scanRangeSize, int[][] array, int threadIndex, int[] largestNumbersInRangeArray, AtomicInteger exitedThreads) {
+        private final int startOfRange;
+        private final int scanRangeSize;
+        private final int[][] array;
+        private final int threadIndex;
+
+        public SearchArrayRange(int startOfRange, int scanRangeSize, int[][] array, int threadIndex) {
             this.startOfRange = startOfRange;
             this.scanRangeSize = scanRangeSize;
             this.array = array;
             this.threadIndex = threadIndex;
-            this.largestNumbersInRangeArray = largestNumbersInRangeArray;
-            this.exitedThreads = exitedThreads;
         }
 
-        public void run() {
-            largestNumbersInRangeArray[threadIndex] = TwoDimensionArraySearchUtilsJava.findLargestNumberInArrayRange(startOfRange, scanRangeSize, array);
-            exitedThreads.incrementAndGet();
+        public Integer call() {
+            return TwoDimensionArraySearchUtilsJava.findLargestNumberInArrayRange(startOfRange, scanRangeSize, array);
         }
     }
 }
