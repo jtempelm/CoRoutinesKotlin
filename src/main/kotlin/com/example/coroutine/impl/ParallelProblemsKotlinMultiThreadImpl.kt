@@ -2,32 +2,54 @@ package com.example.coroutine.impl
 
 import com.example.coroutine.ParallelProblems
 import com.example.coroutine.util.findLargestNumberInArrayRange
-import com.example.coroutine.util.findLargestNumberInResultArray
-import java.lang.Thread.sleep
-import java.util.concurrent.atomic.AtomicInteger
-import kotlin.concurrent.thread
-
-private const val delayMillis: Long = 1000
+import java.util.concurrent.Callable
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
 
 class ParallelProblemsKotlinMultiThreadImpl(private val numberOfThreads: Int) : ParallelProblems {
 
+    private val executor = Executors.newFixedThreadPool(numberOfThreads)
+
     override fun findLargestNumberInAnArray(array: Array<IntArray>): Int {
-        val largestNumbersInRangeArray = IntArray(numberOfThreads) { Int.MIN_VALUE } //Int.MIN_SIZE?
+        val scanRangeSize = array.size / this.numberOfThreads
 
-        var exitedThreads = AtomicInteger(0)
-        val scanRangeSize = array.size / numberOfThreads
-        for (i in 0 until numberOfThreads) {
-            thread {
-                largestNumbersInRangeArray[i] = findLargestNumberInArrayRange(i * scanRangeSize, scanRangeSize, array)
-                exitedThreads.incrementAndGet()
+        val tasks = ArrayList<Callable<Int>>(this.numberOfThreads)
+        for (i in 0 until this.numberOfThreads) {
+            tasks.add(SearchArrayRange(i * scanRangeSize, scanRangeSize, array))
+        }
+
+        try {
+            return this.executor.invokeAll<Int>(tasks)
+                    .stream()
+                    .mapToInt { getUninterruptibly(it) }
+                    .max()
+                    .asInt
+        } catch (ex: InterruptedException) {
+            Thread.currentThread().interrupt()
+            throw RuntimeException(ex)
+        } catch (ex: Exception) {
+            throw RuntimeException(ex)
+        }
+
+    }
+
+    private fun getUninterruptibly(f: Future<Int>): Int {
+        while (true) {
+            try {
+                return f.get()
+            } catch (ex: InterruptedException) {
+            } catch (ex: Exception) {
+                throw RuntimeException(ex)
             }
-        }
 
-        while (exitedThreads.toInt() != numberOfThreads) {
-            sleep(delayMillis)
         }
+    }
 
-        return findLargestNumberInResultArray(largestNumbersInRangeArray)
+    private inner class SearchArrayRange(private val startOfRange: Int, private val scanRangeSize: Int, private val array: Array<IntArray>) : Callable<Int> {
+
+        override fun call(): Int {
+            return findLargestNumberInArrayRange(startOfRange, scanRangeSize, array)
+        }
     }
 
 }

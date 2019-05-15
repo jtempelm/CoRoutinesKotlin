@@ -4,16 +4,11 @@ import com.example.coroutine.ParallelProblems;
 import com.example.coroutine.util.TwoDimensionArraySearchUtilsJava;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.Callable;
-
-import static java.lang.Thread.sleep;
 
 public class ParallelProblemsJavaMultiThreadingImpl implements ParallelProblems {
     private final java.util.concurrent.ExecutorService executor;
@@ -29,13 +24,13 @@ public class ParallelProblemsJavaMultiThreadingImpl implements ParallelProblems 
 
         final List<Callable<Integer>> tasks = new ArrayList<>(this.numberOfThreads);
         for (int i = 0; i < this.numberOfThreads; i++) {
-            tasks.add(new SearchArrayRange(i * scanRangeSize, scanRangeSize, array, i));
+            tasks.add(new SearchArrayRange(i * scanRangeSize, scanRangeSize, array));
         }
 
         try {
             return this.executor.invokeAll(tasks)
                 .stream()
-                .mapToInt(ParallelProblemsJavaMultiThreadingImpl::getUninteruptably)
+                .mapToInt(ParallelProblemsJavaMultiThreadingImpl::getUninterruptibly)
                 .max()
                 .getAsInt();
         } catch (final InterruptedException ex) {
@@ -46,8 +41,8 @@ public class ParallelProblemsJavaMultiThreadingImpl implements ParallelProblems 
         }
     }
 
-    private static Integer getUninteruptably(final Future<Integer> f) {
-        for (;;) {
+    private static Integer getUninterruptibly(final Future<Integer> f) {
+        while (true) {
             try {
                 return f.get();
             } catch (final InterruptedException ex) {
@@ -62,13 +57,11 @@ public class ParallelProblemsJavaMultiThreadingImpl implements ParallelProblems 
         private final int startOfRange;
         private final int scanRangeSize;
         private final int[][] array;
-        private final int threadIndex;
 
-        public SearchArrayRange(int startOfRange, int scanRangeSize, int[][] array, int threadIndex) {
+        SearchArrayRange(int startOfRange, int scanRangeSize, int[][] array) {
             this.startOfRange = startOfRange;
             this.scanRangeSize = scanRangeSize;
             this.array = array;
-            this.threadIndex = threadIndex;
         }
 
         public Integer call() {

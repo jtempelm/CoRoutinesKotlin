@@ -1,18 +1,12 @@
 package com.example.coroutine
 
-import java.util.Arrays
 import com.example.coroutine.impl.*
-import com.example.coroutine.impl.ParallelProblemsJavaCoRoutineImpl
-import com.example.coroutine.impl.ParallelProblemsJavaMultiThreadingImpl
-import com.example.coroutine.impl.ParallelProblemsJavaSerialImpl
-import com.example.coroutine.impl.ParallelProblemsKotlinCoRoutineImpl
-import com.example.coroutine.impl.ParallelProblemsKotlinMultiThreadImpl
-import com.example.coroutine.impl.ParallelProblemsKotlinSerialImpl
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import java.util.*
 import kotlin.test.assertEquals
 
-private const val ARRAY_SIZE = 30_000
+private const val ARRAY_SIZE = 30_000 //VM Options: -ea -Xms2G -Xmx5G
 private const val NUMBER_OF_THREADS = 2
 private const val NUMBER_OF_COROUTINES = 2
 
@@ -21,10 +15,6 @@ class ParallelProblemsTest {
     private val largestNumberGenerated = largestNumber(twoDNumberArray)
 
     companion object {
-        private const val ARRAY_SIZE = 30_000
-        private const val NUMBER_OF_THREADS = 8
-        private const val NUMBER_OF_COROUTINES = 8
-
         @BeforeAll
         @JvmStatic
         internal fun beforeAll() {
@@ -36,7 +26,7 @@ class ParallelProblemsTest {
     @Test
     fun findTheLargestNumberInA2dArray_kotlinSerial() {
         for (i in 1..10) {
-            System.out.print("Serial Kotlin Implementation  - test run ${i} - ")
+            System.out.print("Kotlin Serial Implementation  - test run ${i} - ")
 
             val data = Arrays.copyOf(twoDNumberArray, ARRAY_SIZE)
             val startTime = System.currentTimeMillis()
@@ -62,7 +52,7 @@ class ParallelProblemsTest {
     @Test
     fun findTheLargestNumberInA2dArray_kotlinCoRoutine() {
         for (i in 1..10) {
-            System.out.print("Serial CoRoutine Implementation - test run ${i} - ")
+            System.out.print("Kotlin CoRoutine Implementation - test run ${i} - ")
 
             val data = Arrays.copyOf(twoDNumberArray, ARRAY_SIZE)
             val startTime = System.currentTimeMillis()
