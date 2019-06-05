@@ -4,7 +4,9 @@ import com.example.coroutine.ParallelProblems;
 import de.esoco.coroutine.CoroutineScope;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.example.coroutine.util.TwoDimensionArraySearchUtilsJava.findLargestNumberInArrayRange;
@@ -43,5 +45,11 @@ public class ParallelProblemsJavaCoRoutineImpl implements ParallelProblems {
         }
 
         return findLargestNumberInResultArray(largestNumbersInRangeArray);
+    }
+
+    @NotNull
+    @Override
+    public List<Integer> findPrimeFactors(final int n) {
+        return new ArrayList<Integer>();
     }
 }

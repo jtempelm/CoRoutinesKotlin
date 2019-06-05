@@ -6,7 +6,7 @@ public class TwoDimensionArraySearchUtilsJava {
         int largestNumber = Integer.MIN_VALUE;
 
         final java.util.List<int[]> xrange = new java.util.ArrayList<>(startOfRange + scanRangeSize);
-        for (int x = startOfRange, i = 0; x < (startOfRange + scanRangeSize); x++, i++) {
+        for (int x = startOfRange; x < (startOfRange + scanRangeSize); x++) {
             xrange.add(array[x]);
         }
 

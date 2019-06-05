@@ -68,4 +68,11 @@ public class ParallelProblemsJavaMultiThreadingImpl implements ParallelProblems 
             return TwoDimensionArraySearchUtilsJava.findLargestNumberInArrayRange(startOfRange, scanRangeSize, array);
         }
     }
+
+    @NotNull
+    @Override
+    public List<Integer> findPrimeFactors(final int n) {
+        return new ArrayList<Integer>();
+    }
+
 }

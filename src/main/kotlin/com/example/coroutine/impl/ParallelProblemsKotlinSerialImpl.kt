@@ -7,4 +7,8 @@ class ParallelProblemsKotlinSerialImpl : ParallelProblems {
     override fun findLargestNumberInAnArray(array: Array<IntArray>): Int {
         return findLargestNumberInArrayRange(startOfRange = 0, scanRangeSize = array.size, array = array)
     }
+
+    override fun findPrimeFactors(n: Int): List<Int> {
+        TODO("not Implemented")
+    }
 }

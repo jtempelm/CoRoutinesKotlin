@@ -30,4 +30,8 @@ class ParallelProblemsKotlinCoRoutineImpl(private val numberOfCoRoutines: Int) :
 
         return findLargestNumberInResultArray(largestNumbersInRangeArray)
     }
+
+    override fun findPrimeFactors(n: Int): List<Int> {
+        TODO("not implemented")
+    }
 }

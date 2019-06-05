@@ -52,4 +52,8 @@ class ParallelProblemsKotlinMultiThreadImpl(private val numberOfThreads: Int) : 
         }
     }
 
+    override fun findPrimeFactors(n: Int): List<Int> {
+        TODO("not implemented")
+    }
+
 }
