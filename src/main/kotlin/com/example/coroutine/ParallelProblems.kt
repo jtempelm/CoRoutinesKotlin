@@ -4,5 +4,5 @@ interface ParallelProblems {
 
     fun findLargestNumberInAnArray(array: Array<IntArray>): Int
 
-    fun findPrimeFactors(n: Int): List<Int>
+    fun findPrimeFactors(primeProduct: Long): List<Long>
 }

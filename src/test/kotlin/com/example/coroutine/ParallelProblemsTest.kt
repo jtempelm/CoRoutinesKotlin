@@ -11,26 +11,28 @@ private const val NUMBER_OF_THREADS = 2
 private const val NUMBER_OF_COROUTINES = 2
 private const val TEST_ITERATIONS = 10
 
-private const val PRIME_PRODUCT_1 = 6 //the simplest possible example
-private const val PRIME_PRODUCT_1_FACTOR_SMALL = 2
-private const val PRIME_PRODUCT_1_FACTOR_LARGE = 3
+private const val PRIME_PRODUCT_1 = 6L //the simplest possible example
+private const val PRIME_PRODUCT_1_FACTOR_SMALL = 2L
+private const val PRIME_PRODUCT_1_FACTOR_LARGE = 3L
 
-private const val PRIME_PRODUCT_2 = 901
-private const val PRIME_PRODUCT_2_FACTOR_SMALL = 17
-private const val PRIME_PRODUCT_2_FACTOR_LARGE = 53
+private const val PRIME_PRODUCT_2 = 43481274954679L
+private const val PRIME_PRODUCT_2_FACTOR_SMALL = 6584629L
+private const val PRIME_PRODUCT_2_FACTOR_LARGE = 6603451L
 
-private const val PRIME_PRODUCT_3 = 82885603
-private const val PRIME_PRODUCT_3_FACTOR_SMALL = 8311
-private const val PRIME_PRODUCT_3_FACTOR_LARGE = 9973
+private const val PRIME_PRODUCT_3 = 228574383647621387L
+private const val PRIME_PRODUCT_3_FACTOR_SMALL = 458476141L
+private const val PRIME_PRODUCT_3_FACTOR_LARGE = 498552407L
 
-private const val PRIME_PRODUCT_4 = 6569317
-private const val PRIME_PRODUCT_4_FACTOR_SMALL = 2113
-private const val PRIME_PRODUCT_4_FACTOR_LARGE = 3109
+private const val PRIME_PRODUCT_4 = 1437919224904276069L
+private const val PRIME_PRODUCT_4_FACTOR_SMALL = 1058478403L
+private const val PRIME_PRODUCT_4_FACTOR_LARGE = 1358477623L
 
-private const val PRIME_PRODUCT_5 = 333797
-private const val PRIME_PRODUCT_5_FACTOR_SMALL = 541
-private const val PRIME_PRODUCT_5_FACTOR_LARGE = 617
+//private const val PRIME_PRODUCT_5 = 12233986365800098933857L //Out of range of long
+//private const val PRIME_PRODUCT_5_FACTOR_SMALL = 101058482731L
+//private const val PRIME_PRODUCT_5_FACTOR_LARGE = 171058480547L
 
+//Factorize: http://magma.maths.usyd.edu.au/calc/ Factorization(82885603);
+//Prime Check: http://www.math.com/students/calculators/source/prime-number.htm
 class ParallelProblemsTest {
     private val twoDNumberArray = generate2DArray(ARRAY_SIZE)
     private val largestNumberGenerated = largestNumber(twoDNumberArray)
@@ -127,7 +129,26 @@ class ParallelProblemsTest {
         for (i in 1..TEST_ITERATIONS) {
             System.out.print("Java Serial Implementation findPrimeFactorPair - test run ${i} - ")
 
-            findPrimeFactorPairWithImplementation(PRIME_PRODUCT_5, PRIME_PRODUCT_5_FACTOR_SMALL, PRIME_PRODUCT_5_FACTOR_LARGE, ParallelProblemsJavaSerialImpl())
+            findPrimeFactorPairWithImplementation(
+                    PRIME_PRODUCT_4,
+                    PRIME_PRODUCT_4_FACTOR_SMALL,
+                    PRIME_PRODUCT_4_FACTOR_LARGE,
+                    ParallelProblemsJavaSerialImpl()
+            )
+        }
+    }
+
+    @Test
+    fun findPrimeFactorPair_kotlinSerial() {
+        for (i in 1..TEST_ITERATIONS) {
+            System.out.print("Kotlin Serial Implementation findPrimeFactorPair - test run ${i} - ")
+
+            findPrimeFactorPairWithImplementation(
+                    PRIME_PRODUCT_4,
+                    PRIME_PRODUCT_4_FACTOR_SMALL,
+                    PRIME_PRODUCT_4_FACTOR_LARGE,
+                    ParallelProblemsKotlinSerialImpl()
+            )
         }
     }
 
@@ -170,7 +191,7 @@ class ParallelProblemsTest {
         assertEquals(largestNumberGenerated, largestNumber)
     }
 
-    private fun findPrimeFactorPairWithImplementation(primePairProduct: Int, primeFactorSmall: Int, primeFactorLarge: Int, parallelProblems: ParallelProblems) {
+    private fun findPrimeFactorPairWithImplementation(primePairProduct: Long, primeFactorSmall: Long, primeFactorLarge: Long, parallelProblems: ParallelProblems) {
         val startTime = System.currentTimeMillis()
         val primePair = parallelProblems.findPrimeFactors(primePairProduct)
         val endTime = System.currentTimeMillis()

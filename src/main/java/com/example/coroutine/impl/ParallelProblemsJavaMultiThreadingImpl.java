@@ -71,8 +71,8 @@ public class ParallelProblemsJavaMultiThreadingImpl implements ParallelProblems 
 
     @NotNull
     @Override
-    public List<Integer> findPrimeFactors(final int n) {
-        return new ArrayList<Integer>();
+    public List<Long> findPrimeFactors(final long n) {
+        return new ArrayList<Long>();
     }
 
 }

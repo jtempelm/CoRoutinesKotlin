@@ -8,7 +8,30 @@ class ParallelProblemsKotlinSerialImpl : ParallelProblems {
         return findLargestNumberInArrayRange(startOfRange = 0, scanRangeSize = array.size, array = array)
     }
 
-    override fun findPrimeFactors(n: Int): List<Int> {
-        TODO("not Implemented")
+    override fun findPrimeFactors(primeProduct: Long): List<Long> {
+        if (primeProduct < 2L) return emptyList()
+
+        val primeFactors = mutableListOf<Long>()
+        var remainder = primeProduct
+        while (remainder % 2L == 0L) {
+            primeFactors.add(2L)
+            remainder /= 2L
+        }
+
+        var i = 3L
+        while (i <= remainder / i) {
+            while (remainder % i == 0L) {
+                primeFactors.add(i)
+                remainder /= i
+            }
+
+            i += 2L
+        }
+
+        if (remainder > 1) {
+            primeFactors.add(remainder)
+        }
+
+        return primeFactors
     }
 }

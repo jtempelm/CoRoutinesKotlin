@@ -18,52 +18,38 @@ public class ParallelProblemsJavaSerialImpl implements ParallelProblems {
 
     @NotNull
     @Override
-    public List<Integer> findPrimeFactors(final int primeProduct) {
-        final List<Integer> primeNumbersLessThanN = findPrimeNumbersLessThanPrimeProduct(primeProduct);
+    public List<Long> findPrimeFactors(final long primeProduct) {
+        final List<Long> primeFactors = new ArrayList<Long>();
 
-        return findPrimeFactorPair(primeProduct, primeNumbersLessThanN);
-    }
+        if (primeProduct < 2) {
+            return primeFactors;
+        }
 
-    private List<Integer> findPrimeNumbersLessThanPrimeProduct(final int primeProduct) {
-        final List<Integer> primesInRange = new ArrayList<Integer>();
-        for (int i = 1; i < primeProduct; i++) {
-            if (isPrime(i)) {
-                primesInRange.add(i);
+        Long remainder = primeProduct;
+        while (remainder % 2 == 0L) {
+            if (!primeFactors.contains(2L)) {
+                primeFactors.add(2L);
             }
+            remainder /= 2L;
         }
 
-        return primesInRange;
-    }
-
-    private boolean isPrime(final int number) {
-        if (number <= 1) {
-            return false;
-        }
-
-        for (int j = 2; j < number; j++) {
-            if (number % j == 0) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private List<Integer> findPrimeFactorPair(final Integer n, final List<Integer> primeNumbersLessThanN) {
-        final List<Integer> primeFactorPair = new ArrayList<Integer>();
-
-        for (final Integer p : primeNumbersLessThanN) {
-            for (final Integer q : primeNumbersLessThanN) {
-                if (p * q == n) {
-                    primeFactorPair.add(p);
-                    primeFactorPair.add(q);
-
-                    return primeFactorPair;
+        Long i = 3L;
+        while (i <= remainder / i) {
+            while (remainder % i == 0) {
+                if (!primeFactors.contains(i)) {
+                    primeFactors.add(i);
                 }
+                remainder /= i;
             }
+
+            i += 2;
         }
 
-        return primeFactorPair;
+        if (remainder > 1) {
+            primeFactors.add(remainder);
+        }
+
+        return primeFactors;
     }
 
 }
