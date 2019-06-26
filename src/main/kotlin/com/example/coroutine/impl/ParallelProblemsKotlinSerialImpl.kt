@@ -8,20 +8,27 @@ class ParallelProblemsKotlinSerialImpl : ParallelProblems {
         return findLargestNumberInArrayRange(startOfRange = 0, scanRangeSize = array.size, array = array)
     }
 
-    override fun findPrimeFactors(primeProduct: Long): List<Long> {
-        if (primeProduct < 2L) return emptyList()
-
+    override fun findPrimeFactors(primeProduct: Long): List<Long> { //TODO make this a util for multithread impl
         val primeFactors = mutableListOf<Long>()
+
+        if (primeProduct < 2L) {
+            return emptyList()
+        }
+
         var remainder = primeProduct
         while (remainder % 2L == 0L) {
-            primeFactors.add(2L)
+            if (!primeFactors.contains(2L)) {
+                primeFactors.add(2L)
+            }
             remainder /= 2L
         }
 
-        var i = 3L
+        var i = 3L //TODO range assignment ternary
         while (i <= remainder / i) {
             while (remainder % i == 0L) {
-                primeFactors.add(i)
+                if (!primeFactors.contains(i)) {
+                    primeFactors.add(i)
+                }
                 remainder /= i
             }
 

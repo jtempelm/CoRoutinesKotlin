@@ -15,19 +15,19 @@ import static java.lang.Thread.sleep;
 
 public class ParallelProblemsJavaCoRoutineImpl implements ParallelProblems {
 
-    private static int DELAY_MILLIS = 1000;
-    private int NUMBER_OF_COROUTINES;
+    private static final int DELAY_MILLIS = 1000;
+    private final int NUMBER_OF_COROUTINES;
 
-    public ParallelProblemsJavaCoRoutineImpl(int numberOfCoRoutines) {
+    public ParallelProblemsJavaCoRoutineImpl(final int numberOfCoRoutines) {
         this.NUMBER_OF_COROUTINES = numberOfCoRoutines;
     }
 
     public int findLargestNumberInAnArray(@NotNull final int[][] array) {
-        int[] largestNumbersInRangeArray = new int[NUMBER_OF_COROUTINES];
+        final int[] largestNumbersInRangeArray = new int[NUMBER_OF_COROUTINES];
         Arrays.fill(largestNumbersInRangeArray, Integer.MIN_VALUE);
 
-        AtomicInteger exitedCoRoutines = new AtomicInteger(0); //threadsafe atomic int?
-        int scanRangeSize = array.length / NUMBER_OF_COROUTINES;
+        final AtomicInteger exitedCoRoutines = new AtomicInteger(0); //threadsafe atomic int?
+        final int scanRangeSize = array.length / NUMBER_OF_COROUTINES;
         for (int i = 0; i < NUMBER_OF_COROUTINES; i++) {
             final int coRoutineIndex = i;
             final int startOfRange = i * scanRangeSize; //variable used in lambda expression but be final or effectively final
@@ -39,7 +39,7 @@ public class ParallelProblemsJavaCoRoutineImpl implements ParallelProblems {
 
         while (exitedCoRoutines.intValue() < NUMBER_OF_COROUTINES) {
             try {
-                sleep(DELAY_MILLIS);
+                sleep(DELAY_MILLIS); //TODO FIX THIS? I THOUGHT I already did
             } catch (InterruptedException ignored) {
             }
         }
