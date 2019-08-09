@@ -7,15 +7,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.example.coroutine.util.TwoDimensionArraySearchUtilsJava.findLargestNumberInArrayRange;
 import static com.example.coroutine.util.TwoDimensionArraySearchUtilsJava.findLargestNumberInResultArray;
-import static java.lang.Thread.sleep;
 
+//based on https://medium.com/@esocogmbh/coroutines-in-pure-java-65661a379c85
 public class ParallelProblemsJavaCoRoutineImpl implements ParallelProblems {
 
-    private static final int DELAY_MILLIS = 1000;
     private final int NUMBER_OF_COROUTINES;
 
     public ParallelProblemsJavaCoRoutineImpl(final int numberOfCoRoutines) {
@@ -26,22 +24,13 @@ public class ParallelProblemsJavaCoRoutineImpl implements ParallelProblems {
         final int[] largestNumbersInRangeArray = new int[NUMBER_OF_COROUTINES];
         Arrays.fill(largestNumbersInRangeArray, Integer.MIN_VALUE);
 
-        final AtomicInteger exitedCoRoutines = new AtomicInteger(0); //threadsafe atomic int?
         final int scanRangeSize = array.length / NUMBER_OF_COROUTINES;
         for (int i = 0; i < NUMBER_OF_COROUTINES; i++) {
             final int coRoutineIndex = i;
             final int startOfRange = i * scanRangeSize; //variable used in lambda expression but be final or effectively final
             CoroutineScope.launch(scope -> {
                 largestNumbersInRangeArray[coRoutineIndex] = findLargestNumberInArrayRange(startOfRange, scanRangeSize, array);
-                exitedCoRoutines.incrementAndGet();
             });
-        }
-
-        while (exitedCoRoutines.intValue() < NUMBER_OF_COROUTINES) {
-            try {
-                sleep(DELAY_MILLIS); //TODO FIX THIS? I THOUGHT I already did
-            } catch (InterruptedException ignored) {
-            }
         }
 
         return findLargestNumberInResultArray(largestNumbersInRangeArray);
@@ -51,5 +40,11 @@ public class ParallelProblemsJavaCoRoutineImpl implements ParallelProblems {
     @Override
     public List<Long> findPrimeFactors(final long n) {
         return new ArrayList<Long>();
+    }
+
+    @NotNull
+    @Override
+    public String findPreHashValueFromHash(@NotNull final String hash, @NotNull final char[] symbolSet) {
+        return null;
     }
 }

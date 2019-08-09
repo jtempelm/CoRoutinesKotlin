@@ -41,4 +41,8 @@ class ParallelProblemsKotlinSerialImpl : ParallelProblems {
 
         return primeFactors
     }
+
+    override fun findPreHashValueFromHash(hash: String, symbolSet: CharArray): String {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

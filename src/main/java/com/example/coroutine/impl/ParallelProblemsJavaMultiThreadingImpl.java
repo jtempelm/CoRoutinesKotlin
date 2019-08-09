@@ -122,4 +122,10 @@ public class ParallelProblemsJavaMultiThreadingImpl implements ParallelProblems 
         }
     }
 
+    @NotNull
+    @Override
+    public String findPreHashValueFromHash(@NotNull final String hash, @NotNull final char[] symbolSet) {
+        return null;
+    }
+
 }

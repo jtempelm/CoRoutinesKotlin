@@ -56,4 +56,8 @@ class ParallelProblemsKotlinMultiThreadImpl(private val numberOfThreads: Int) : 
         TODO("not implemented")
     }
 
+    override fun findPreHashValueFromHash(hash: String, symbolSet: CharArray): String {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 }
