@@ -39,9 +39,10 @@ private const val passwordString1 = "ab12"
 private const val passwordString2 = "pass12"
 private const val passwordString3 = "password"
 private const val passwordString4 = "j0l1yR0D3erRu13sTh3Wav3s!"
-private val symbolSet = charArrayOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '=', '+', '{', '}', '[', ']', ';', ':', '`')
+private const val passwordString5 = "6z0"
+private val symbolSet = charArrayOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '=', '+', '{', '}', '[', ']', ';', ':', '`', '0','1','2','3','4','5','6','7','8','9')
 private val symbolSetEasy = charArrayOf('a', 'b', 'c', '1', '2', '3')
-//String list constant for available symbols, that we will mod wrap around?
+private val symbolSetNumeric = charArrayOf('0','1','2','3','4','5','6','7','8','9')
 
 //Factorize: http://magma.maths.usyd.edu.au/calc/ Factorization(82885603);
 //Prime Check: http://www.math.com/students/calculators/source/prime-number.htm
@@ -206,6 +207,7 @@ class ParallelProblemsTest {
             findPreHashValueWithImplementation( //Wdk3cjVkk3zRRBNwx8fNn2afkyU9z6uMUK/607GNZF4=
                     passwordString3,
                     hashedValue,
+                    symbolSet,
                     ParallelProblemsJavaSerialImpl()
             )
         }
@@ -228,6 +230,7 @@ class ParallelProblemsTest {
             findPreHashValueWithImplementation(
                     passwordString1,
                     hashedValue,
+                    symbolSet,
                     ParallelProblemsJavaSerialImpl()
             )
         }
@@ -242,15 +245,16 @@ class ParallelProblemsTest {
             val hashedValue = String(
                     Base64.getEncoder().encode(
                             messageDigest.digest(
-                                    getBytes(passwordString1)
+                                    getBytes(passwordString5)
                             )
                     )
             )
 
             findPreHashValueWithImplementation(
-                    passwordString1,
+                    passwordString5,
                     hashedValue,
-                    ParallelProblemsJavaSerialImpl()
+                    symbolSetNumeric,
+                    ParallelProblemsJavaMultiThreadingImpl(NUMBER_OF_THREADS)
             )
         }
     }
@@ -272,6 +276,7 @@ class ParallelProblemsTest {
             findPreHashValueWithImplementation(
                     passwordString1,
                     hashedValue,
+                    symbolSet,
                     ParallelProblemsJavaSerialImpl()
             )
         }
@@ -294,6 +299,7 @@ class ParallelProblemsTest {
             findPreHashValueWithImplementation(
                     passwordString1,
                     hashedValue,
+                    symbolSet,
                     ParallelProblemsJavaSerialImpl()
             )
         }
@@ -316,6 +322,7 @@ class ParallelProblemsTest {
             findPreHashValueWithImplementation(
                     passwordString1,
                     hashedValue,
+                    symbolSet,
                     ParallelProblemsJavaSerialImpl()
             )
         }
@@ -370,7 +377,7 @@ class ParallelProblemsTest {
         assertEquals(primePair[1], primeFactorLarge)
     }
 
-    private fun findPreHashValueWithImplementation(preHashedValue: String, hashedValue: String, parallelProblems: ParallelProblems) {
+    private fun findPreHashValueWithImplementation(preHashedValue: String, hashedValue: String, symbolSet: CharArray, parallelProblems: ParallelProblems) {
         val startTime = System.currentTimeMillis()
         val solvedPreHashValue = parallelProblems.findPreHashValueFromHash(hashedValue, symbolSet)
         val endTime = System.currentTimeMillis()

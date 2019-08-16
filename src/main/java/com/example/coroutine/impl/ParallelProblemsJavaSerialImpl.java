@@ -11,9 +11,9 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
-public class ParallelProblemsJavaSerialImpl implements ParallelProblems {
+import static com.example.coroutine.util.Constants.MAX_HASH_LENGTH;
 
-    private static final int MAX_HASH_LENGTH = 8;
+public class ParallelProblemsJavaSerialImpl implements ParallelProblems {
 
     @Override
     public int findLargestNumberInAnArray(@NotNull final int[][] array) {
@@ -40,11 +40,9 @@ public class ParallelProblemsJavaSerialImpl implements ParallelProblems {
         boolean passwordFound = false;
         final StringBuilder hashGuess = new StringBuilder();
         hashGuess.append(sortedSymbolSet[0]);
-//        hashGuess.append('\0'); //we append the null byte to catch the increment run off, it makes the implementation easier
         int symbolSetIndex = 0;
 
         while (!passwordFound && hashGuess.length() <= MAX_HASH_LENGTH) {
-//            symbolSetIndex = incrementHashStringInParameter(hashGuess, sortedSymbolSet, symbolSetIndex);
             symbolSetIndex = incrementHashStringInParameterRecursive(hashGuess, sortedSymbolSet, symbolSetIndex);
             passwordFound = isGuessCorrect(hash, hashGuess);
         }
@@ -80,7 +78,7 @@ public class ParallelProblemsJavaSerialImpl implements ParallelProblems {
         }
     }
 
-    private char getNextSymbol(final char symbol, final char[] symbolSet) { //Because I'm lazy, and I don't want to maintain the state of the n+1th index
+    private char getNextSymbol(final char symbol, final char[] symbolSet) { //Because I'm lazy, and I don't want to maintain the state of the n+1th index. Really I should refactor this and use indexOf() or something
         final int indexOfSymbol = Arrays.binarySearch(symbolSet, symbol);
 
         return symbolSet[indexOfSymbol + 1];
