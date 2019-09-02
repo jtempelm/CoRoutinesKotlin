@@ -200,14 +200,14 @@ class ParallelProblemsTest {
             val hashedValue = String(
                     Base64.getEncoder().encode(
                             messageDigest.digest(
-                                    getBytes(passwordString3)
+                                    getBytes(passwordString1)
                             )
                     )
             )
-            findPreHashValueWithImplementation( //Wdk3cjVkk3zRRBNwx8fNn2afkyU9z6uMUK/607GNZF4=
-                    passwordString3,
+            findPreHashValueWithImplementation(
+                    passwordString1,
                     hashedValue,
-                    symbolSet,
+                    symbolSetEasy,
                     ParallelProblemsJavaSerialImpl()
             )
         }
@@ -230,8 +230,8 @@ class ParallelProblemsTest {
             findPreHashValueWithImplementation(
                     passwordString1,
                     hashedValue,
-                    symbolSet,
-                    ParallelProblemsJavaSerialImpl()
+                    symbolSetEasy,
+                    ParallelProblemsKotlinSerialImpl()
             )
         }
     }
@@ -245,15 +245,15 @@ class ParallelProblemsTest {
             val hashedValue = String(
                     Base64.getEncoder().encode(
                             messageDigest.digest(
-                                    getBytes(passwordString5)
+                                    getBytes(passwordString1)
                             )
                     )
             )
 
             findPreHashValueWithImplementation(
-                    passwordString5,
+                    passwordString1,
                     hashedValue,
-                    symbolSetNumeric,
+                    symbolSetEasy,
                     ParallelProblemsJavaMultiThreadingImpl(NUMBER_OF_THREADS)
             )
         }
@@ -277,7 +277,7 @@ class ParallelProblemsTest {
                     passwordString1,
                     hashedValue,
                     symbolSet,
-                    ParallelProblemsJavaSerialImpl()
+                    ParallelProblemsKotlinMultiThreadImpl(NUMBER_OF_THREADS)
             )
         }
     }
@@ -300,7 +300,7 @@ class ParallelProblemsTest {
                     passwordString1,
                     hashedValue,
                     symbolSet,
-                    ParallelProblemsJavaSerialImpl()
+                    ParallelProblemsJavaCoRoutineImpl(NUMBER_OF_COROUTINES)
             )
         }
     }
@@ -323,7 +323,7 @@ class ParallelProblemsTest {
                     passwordString1,
                     hashedValue,
                     symbolSet,
-                    ParallelProblemsJavaSerialImpl()
+                    ParallelProblemsKotlinCoRoutineImpl(NUMBER_OF_COROUTINES)
             )
         }
     }

@@ -159,17 +159,6 @@ public class ParallelProblemsJavaMultiThreadingImpl implements ParallelProblems 
         }
     }
 
-    private static String getStringWithoutInterruption(final Future<String> future) {
-        while (true) {
-            try {
-                return future.get();
-            } catch (final InterruptedException ignored) {
-            } catch (final Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-    }
-
     private final class PreHashSearchRange implements Callable<String> {
 
         private final int startOfRange;
