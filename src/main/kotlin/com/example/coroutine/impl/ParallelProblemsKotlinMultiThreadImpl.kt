@@ -1,10 +1,14 @@
 package com.example.coroutine.impl
 
 import com.example.coroutine.ParallelProblems
+import com.example.coroutine.util.Constants.MAX_HASH_LENGTH
+import com.example.coroutine.util.PreHashSearchRangeUtils
 import com.example.coroutine.util.findLargestNumberInArrayRange
+import java.util.*
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
+import kotlin.collections.ArrayList
 
 class ParallelProblemsKotlinMultiThreadImpl(private val numberOfThreads: Int) : ParallelProblems {
 
@@ -21,7 +25,7 @@ class ParallelProblemsKotlinMultiThreadImpl(private val numberOfThreads: Int) : 
         try {
             return this.executor.invokeAll<Int>(tasks)
                     .stream()
-                    .mapToInt { getUninterruptibly(it) }
+                    .mapToInt { getUninterrupted(it) }
                     .max()
                     .asInt
         } catch (ex: InterruptedException) {
@@ -33,7 +37,7 @@ class ParallelProblemsKotlinMultiThreadImpl(private val numberOfThreads: Int) : 
 
     }
 
-    private fun getUninterruptibly(f: Future<Int>): Int {
+    private fun getUninterrupted(f: Future<Int>): Int {
         while (true) {
             try {
                 return f.get()
@@ -57,7 +61,39 @@ class ParallelProblemsKotlinMultiThreadImpl(private val numberOfThreads: Int) : 
     }
 
     override fun findPreHashValueFromHash(hash: String, symbolSet: CharArray): String {
-        TODO("not implemented")
+        val totalNumberOfPossibilities = Math.pow(symbolSet.size.toDouble(), MAX_HASH_LENGTH.toDouble()).toInt()
+        val scanRangeSize = totalNumberOfPossibilities / this.numberOfThreads
+
+        val sortedSymbolSet = symbolSet.clone()
+        Arrays.sort(sortedSymbolSet) //our comparison operation later depends upon a sorted sequence of characters when compared to int values
+
+        val tasks = ArrayList<Callable<String>>(this.numberOfThreads)
+        for (i in 0 until this.numberOfThreads) {
+            tasks.add(PreHashSearchRange(i * scanRangeSize, scanRangeSize, hash, sortedSymbolSet))
+        }
+
+        try {
+            val reversedHashResultsList = this.executor.invokeAll(tasks)
+            for (reversedHashStringResult in reversedHashResultsList) {
+                val result = reversedHashStringResult.get()
+                if (!result.isEmpty()) {
+                    return result
+                }
+            }
+            return ""
+        } catch (ex: InterruptedException) {
+            Thread.currentThread().interrupt()
+            throw RuntimeException(ex)
+        } catch (ex: Exception) {
+            throw RuntimeException(ex)
+        }
+    }
+
+    private inner class PreHashSearchRange internal constructor(private val startOfRange: Int, private val scanRangeSize: Int, private val hash: String, private val symbolSet: CharArray) : Callable<String> {
+
+        override fun call(): String {
+            return PreHashSearchRangeUtils.findPreHashValueInRangeFromHash(startOfRange, scanRangeSize, hash, symbolSet)
+        }
     }
 
 }

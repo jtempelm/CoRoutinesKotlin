@@ -276,7 +276,7 @@ class ParallelProblemsTest {
             findPreHashValueWithImplementation(
                     passwordString1,
                     hashedValue,
-                    symbolSet,
+                    symbolSetEasy,
                     ParallelProblemsKotlinMultiThreadImpl(NUMBER_OF_THREADS)
             )
         }
