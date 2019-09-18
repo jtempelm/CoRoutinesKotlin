@@ -40,9 +40,9 @@ private const val passwordString2 = "pass12"
 private const val passwordString3 = "password"
 private const val passwordString4 = "j0l1yR0D3erRu13sTh3Wav3s!"
 private const val passwordString5 = "6z0"
-private val symbolSet = charArrayOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '=', '+', '{', '}', '[', ']', ';', ':', '`', '0','1','2','3','4','5','6','7','8','9')
+private val symbolSet = charArrayOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '=', '+', '{', '}', '[', ']', ';', ':', '`', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
 private val symbolSetEasy = charArrayOf('a', 'b', 'c', '1', '2', '3')
-private val symbolSetNumeric = charArrayOf('0','1','2','3','4','5','6','7','8','9')
+private val symbolSetNumeric = charArrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
 
 //Factorize: http://magma.maths.usyd.edu.au/calc/ Factorization(82885603);
 //Prime Check: http://www.math.com/students/calculators/source/prime-number.htm
