@@ -11,10 +11,10 @@ import kotlin.test.assertEquals
 
 
 private const val NUMBER_OF_THREADS = 2
-private const val NUMBER_OF_COROUTINES = 2
-private const val TEST_ITERATIONS = 1
+private const val NUMBER_OF_COROUTINES = 32
+private const val TEST_ITERATIONS = 10
 
-private const val ARRAY_SIZE = 100 //benchmark ran at 30_000 with: VM Options: -ea -Xms2G -Xmx5G
+private const val ARRAY_SIZE = 30_000 //benchmark ran at 30_000 with: VM Options: -ea -Xms2G -Xmx5G
 
 private const val PRIME_PRODUCT_1 = 6L //the simplest possible example
 private const val PRIME_PRODUCT_1_FACTOR_SMALL = 2L
@@ -40,10 +40,11 @@ private const val passwordString1 = "ab12"
 private const val passwordString2 = "pass12"
 private const val passwordString3 = "password"
 private const val passwordString4 = "j0l1yR0D3erRu13sTh3Wav3s!"
-private const val passwordString5 = "6z0"
+private const val passwordString5 = "6z0!"
 private val symbolSet = charArrayOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '=', '+', '{', '}', '[', ']', ';', ':', '`', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
 private val symbolSetEasy = charArrayOf('a', 'b', 'c', '1', '2', '3')
 private val symbolSetNumeric = charArrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
+private val symbolSetAlphaNums = charArrayOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
 
 //Factorize: http://magma.maths.usyd.edu.au/calc/ Factorization(82885603);
 //Prime Check: http://www.math.com/students/calculators/source/prime-number.htm
@@ -65,10 +66,7 @@ class ParallelProblemsTest {
             print("Kotlin Serial Implementation findTheLargestNumberInA2dArray  - test run ${i} - ")
 
             val data = Arrays.copyOf(twoDNumberArray, ARRAY_SIZE)
-            val startTime = System.currentTimeMillis()
             findLargestNumberInArrayWithImplementation(data, ParallelProblemsKotlinSerialImpl())
-            val endTime = System.currentTimeMillis()
-            println("${endTime - startTime}ms")
         }
     }
 
@@ -78,10 +76,7 @@ class ParallelProblemsTest {
             print("Kotlin Multi Thread Implementation findTheLargestNumberInA2dArray - test run ${i} - ")
 
             val data = Arrays.copyOf(twoDNumberArray, ARRAY_SIZE)
-            val startTime = System.currentTimeMillis()
             findLargestNumberInArrayWithImplementation(data, ParallelProblemsKotlinMultiThreadImpl(numberOfThreads = NUMBER_OF_THREADS))
-            val endTime = System.currentTimeMillis()
-            println("${endTime - startTime}ms")
         }
     }
 
@@ -91,10 +86,7 @@ class ParallelProblemsTest {
             print("Kotlin CoRoutine Implementation findTheLargestNumberInA2dArray - test run ${i} - ")
 
             val data = Arrays.copyOf(twoDNumberArray, ARRAY_SIZE)
-            val startTime = System.currentTimeMillis()
             findLargestNumberInArrayWithImplementation(data, ParallelProblemsKotlinCoRoutineImpl(numberOfCoRoutines = NUMBER_OF_COROUTINES))
-            val endTime = System.currentTimeMillis()
-            println("${endTime - startTime}ms")
         }
     }
 
@@ -104,10 +96,7 @@ class ParallelProblemsTest {
             print("Java Serial Implementation findTheLargestNumberInA2dArray - test run ${i} - ")
 
             val data = Arrays.copyOf(twoDNumberArray, ARRAY_SIZE)
-            val startTime = System.currentTimeMillis()
             findLargestNumberInArrayWithImplementation(data, ParallelProblemsJavaSerialImpl())
-            val endTime = System.currentTimeMillis()
-            println("${endTime - startTime}ms")
         }
     }
 
@@ -117,10 +106,7 @@ class ParallelProblemsTest {
             print("Java Multi Thread Implementation findTheLargestNumberInA2dArray - test run ${i} - ")
 
             val data = Arrays.copyOf(twoDNumberArray, ARRAY_SIZE)
-            val startTime = System.currentTimeMillis()
             findLargestNumberInArrayWithImplementation(data, ParallelProblemsJavaMultiThreadingImpl(NUMBER_OF_THREADS))
-            val endTime = System.currentTimeMillis()
-            println("${endTime - startTime}ms")
         }
     }
 
@@ -130,10 +116,7 @@ class ParallelProblemsTest {
             print("Java CoRoutine Implementation findTheLargestNumberInA2dArray - test run ${i} - ")
 
             val data = Arrays.copyOf(twoDNumberArray, ARRAY_SIZE)
-            val startTime = System.currentTimeMillis()
             findLargestNumberInArrayWithImplementation(data, ParallelProblemsJavaCoRoutineImpl(NUMBER_OF_COROUTINES))
-            val endTime = System.currentTimeMillis()
-            println("${endTime - startTime}ms")
         }
     }
 
@@ -203,14 +186,14 @@ class ParallelProblemsTest {
             val hashedValue = String(
                     Base64.getEncoder().encode(
                             messageDigest.digest(
-                                    getBytes(passwordString1)
+                                    getBytes(passwordString5)
                             )
                     )
             )
             findPreHashValueWithImplementation(
-                    passwordString1,
+                    passwordString5,
                     hashedValue,
-                    symbolSetEasy,
+                    symbolSet,
                     ParallelProblemsJavaSerialImpl()
             )
         }
@@ -225,15 +208,15 @@ class ParallelProblemsTest {
             val hashedValue = String(
                     Base64.getEncoder().encode(
                             messageDigest.digest(
-                                    getBytes(passwordString1)
+                                    getBytes(passwordString5)
                             )
                     )
             )
 
             findPreHashValueWithImplementation(
-                    passwordString1,
+                    passwordString5,
                     hashedValue,
-                    symbolSetEasy,
+                    symbolSet,
                     ParallelProblemsKotlinSerialImpl()
             )
         }
@@ -242,21 +225,21 @@ class ParallelProblemsTest {
     @Test
     fun findPreHashValue_javaMultiThread() {
         for (i in 1..TEST_ITERATIONS) {
-            print("Java Serial Implementation findPreHashValue - test run ${i} - ")
+            print("Java Multithread Implementation findPreHashValue - test run ${i} - ")
 
             val messageDigest = MessageDigest.getInstance("SHA-256")
             val hashedValue = String(
                     Base64.getEncoder().encode(
                             messageDigest.digest(
-                                    getBytes(passwordString1)
+                                    getBytes(passwordString5)
                             )
                     )
             )
 
             findPreHashValueWithImplementation(
-                    passwordString1,
+                    passwordString5,
                     hashedValue,
-                    symbolSetEasy,
+                    symbolSet,
                     ParallelProblemsJavaMultiThreadingImpl(NUMBER_OF_THREADS)
             )
         }
@@ -271,15 +254,15 @@ class ParallelProblemsTest {
             val hashedValue = String(
                     Base64.getEncoder().encode(
                             messageDigest.digest(
-                                    getBytes(passwordString1)
+                                    getBytes(passwordString5)
                             )
                     )
             )
 
             findPreHashValueWithImplementation(
-                    passwordString1,
+                    passwordString5,
                     hashedValue,
-                    symbolSetEasy,
+                    symbolSet,
                     ParallelProblemsKotlinMultiThreadImpl(NUMBER_OF_THREADS)
             )
         }
@@ -288,19 +271,19 @@ class ParallelProblemsTest {
     @Test
     fun findPreHashValue_javaCoRoutine() {
         for (i in 1..TEST_ITERATIONS) {
-            print("Java Serial Implementation findPreHashValue - test run ${i} - ")
+            print("Java CoRoutine Implementation findPreHashValue - test run ${i} - ")
 
             val messageDigest = MessageDigest.getInstance("SHA-256")
             val hashedValue = String(
                     Base64.getEncoder().encode(
                             messageDigest.digest(
-                                    getBytes(passwordString1)
+                                    getBytes(passwordString5)
                             )
                     )
             )
 
             findPreHashValueWithImplementation(
-                    passwordString1,
+                    passwordString5,
                     hashedValue,
                     symbolSet,
                     ParallelProblemsJavaCoRoutineImpl(NUMBER_OF_COROUTINES)
@@ -317,13 +300,13 @@ class ParallelProblemsTest {
             val hashedValue = String(
                     Base64.getEncoder().encode(
                             messageDigest.digest(
-                                    getBytes(passwordString1)
+                                    getBytes(passwordString5)
                             )
                     )
             )
 
             findPreHashValueWithImplementation(
-                    passwordString1,
+                    passwordString5,
                     hashedValue,
                     symbolSet,
                     ParallelProblemsKotlinCoRoutineImpl(NUMBER_OF_COROUTINES)
