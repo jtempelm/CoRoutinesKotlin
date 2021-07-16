@@ -131,7 +131,7 @@ public class ParallelProblemsJavaMultiThreadingImpl implements ParallelProblems 
     @NotNull
     @Override
     public String findPreHashValueFromHash(@NotNull final String hash, @NotNull final char[] symbolSet) {
-        final int totalNumberOfPossibilities = (int)Math.pow(symbolSet.length, MAX_HASH_LENGTH);
+        final int totalNumberOfPossibilities = (int) Math.pow(symbolSet.length, MAX_HASH_LENGTH);
         final int scanRangeSize = totalNumberOfPossibilities / this.numberOfThreads;
 
         final char[] sortedSymbolSet = symbolSet.clone();
@@ -139,7 +139,7 @@ public class ParallelProblemsJavaMultiThreadingImpl implements ParallelProblems 
 
         final List<Callable<String>> tasks = new ArrayList<>(this.numberOfThreads);
         for (int i = 0; i < this.numberOfThreads; i++) {
-            tasks.add(new PreHashSearchRange(i * scanRangeSize, scanRangeSize, hash, sortedSymbolSet ));
+            tasks.add(new PreHashSearchRange(i * scanRangeSize, scanRangeSize, hash, sortedSymbolSet.clone()));
         }
 
         try {
